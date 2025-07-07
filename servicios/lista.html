@@ -1,0 +1,15 @@
+ {% extends 'base.html' %}
+{% block content %}
+<h1>Servicios disponibles</h1>
+<a href="{% url 'crear_servicio' %}">Crear nuevo servicio</a>
+<ul>
+  {% for servicio in servicios %}
+    <li>
+      <strong>{{ servicio.titulo }}</strong> - {{ servicio.descripcion }} <br>
+      Creado por: {{ servicio.autor.username }} el {{ servicio.fecha_creacion|date:"d/m/Y H:i" }}
+    </li>
+  {% empty %}
+    <li>No hay servicios aún.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

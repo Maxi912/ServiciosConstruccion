@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ServiciosConstrucción</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+ <nav style="background-color: #f0f0f0; padding: 10px;">
+  <a href="{% url 'about' %}">Acerca de</a> |
+  <a href="{% url 'blog_list' %}">Publicaciones</a> |
+
+  {% if user.is_authenticated %}
+    {% if user.userprofile.imagen %}
+      <img src="{{ user.userprofile.imagen.url }}" alt="Perfil" width="40" height="40" style="border-radius: 50%; vertical-align: middle;">
+    {% else %}
+      <img src="{% static 'img/default-avatar.png' %}" alt="Sin imagen" width="40" height="40" style="border-radius: 50%; vertical-align: middle;">
+    {% endif %}
+
+    <span style="margin: 0 10px;">Hola, {{ user.username }}!</span>
+    <a href="{% url 'profile' %}">Mi perfil</a> |
+
+    <!-- Botón de cerrar sesión como formulario -->
+    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+      {% csrf_token %}
+      <button type="submit" style="background: none; border: none; padding: 0; margin: 0; color: blue; text-decoration: underline; cursor: pointer;">
+        Cerrar sesión
+      </button>
+    </form> |
+
+    {% if user.is_staff %}
+      <a href="{% url 'blog_create' %}">Crear Blog</a> |
+    {% endif %}
+  {% else %}
+    <a href="{% url 'login' %}">Iniciar sesión</a> |
+    <a href="{% url 'signup' %}">Registrarse</a> |
+  {% endif %}
+</nav>
+
+ <div class="container">
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+</html>
+
